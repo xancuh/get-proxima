@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        Proxima
-    </title>
+    <title>Proxima</title>
+    <link rel="icon" type="image/png" href="https://cdn.discordapp.com/attachments/1328458897597530182/1328464623917207655/proximatransparent.png">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
 
@@ -13,13 +12,14 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            background: linear-gradient(to bottom right corner, #0d0d12, #003366);
+            background: linear-gradient(to bottom right, #0d0d12, #003366);
             height: 100vh;
             font-family: 'Poppins', sans-serif;
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-direction: column;
         }
 
         .container {
@@ -28,14 +28,7 @@
             position: relative;
             z-index: 2;
             opacity: 0;
-            animation: fadeIn 2s ease-in-out forwards;
-        }
-
-        .icon {
-            width: 100px;
-            height: auto;
-            margin-bottom: 20px;
-            animation: fadeIn 2s ease-in-out forwards;
+            animation: fadeIn 1s ease-in-out forwards;
         }
 
         h1 {
@@ -80,6 +73,36 @@
         }
 
         .btn:hover {
+            background: rgba(255, 255, 255, 0.8);
+            color: #0d0d12;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
+        }
+
+        /* Tab styling */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            z-index: 2;
+        }
+
+        .tab {
+            padding: 15px 25px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .tab:hover {
             background: rgba(255, 255, 255, 0.8);
             color: #0d0d12;
             box-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
@@ -147,20 +170,20 @@
 <body>
     <canvas></canvas>
     <div class="grid">
-        <!-- This grid system adds the lines in the background -->
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
+        <!-- wont work -->
     </div>
+
+    <!-- Tab navigation -->
+    <div class="tabs">
+        <a href="https://discord.gg/hhxZwekdeu" class="tab">Discord</a>
+        <a href="https://getproxima.mysellix.io/" class="tab">Purchase</a>
+    </div>
+
     <div class="container">
-        <img src="https://cdn.discordapp.com/attachments/1328458897597530182/1328464623917207655/proximatransparent.png?ex=6786cc98&is=67857b18&hm=bf2efea209fb8ea65e3a75942e5ab651442ce5279dd095da354c5c2279a1c6b0&" alt="Proxima Icon" class="icon">
         <h1>Proxima</h1>
         <p>"The best & safest choice"</p>
         <div class="buttons">
-            <button class="btn" onclick="window.location.href='https://example.com/download';">Download</button>
-            <button class="btn" onclick="window.location.href='https://discord.com/invite/example';">Discord</button>
+            <button class="btn" onclick="window.location.href='https://gofile.io/d/Yckp7A';">Download</button>
         </div>
     </div>
 
