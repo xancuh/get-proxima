@@ -13,7 +13,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            background: #0d0d12;
+            background: linear-gradient(180deg, #0d0d12, #2a002e);
             height: 100vh;
             font-family: 'Poppins', sans-serif;
             overflow: hidden;
@@ -28,24 +28,34 @@
             position: relative;
             z-index: 2;
             opacity: 0;
-            animation: fadeIn 1s ease-in-out forwards;
+            animation: fadeIn 2s ease-in-out forwards;
+        }
+
+        .icon {
+            width: 100px;
+            height: auto;
+            margin-bottom: 20px;
+            animation: fadeIn 2s ease-in-out forwards;
         }
 
         h1 {
             font-size: 4rem;
             font-weight: 700;
-            background: linear-gradient(180deg, white, #d397f8);
+            background: linear-gradient(180deg, white, #d1b3ff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.5);
             margin-bottom: 10px;
         }
 
+        h1, p {
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 25px rgba(255, 255, 255, 0.6);
+        }
+
         p {
             font-size: 1.5rem;
             font-weight: 400;
             margin: 10px 0 30px;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
         }
 
         .buttons {
@@ -120,8 +130,8 @@
         <h1>Proxima</h1>
         <p>"The best & safest choice"</p>
         <div class="buttons">
-            <button class="btn" onclick="window.location.href='https://example.com/download';">Download</button>
-            <button class="btn" onclick="window.location.href='https://discord.com/invite/example';">Discord</button>
+            <button class="btn" onclick="window.location.href='https://gofile.io/d/Yckp7A';">Download</button>
+            <button class="btn" onclick="window.location.href='https://discord.gg/cU5Ut6pdCc';">Discord</button>
         </div>
     </div>
 
@@ -137,10 +147,10 @@
             constructor(x, y) {
                 this.x = x;
                 this.y = y;
-                this.radius = Math.random() * 3 + 1;
+                this.radius = Math.random() * 2 + 0.5;
                 this.color = 'rgba(255, 255, 255, 0.8)';
-                this.speedX = Math.random() * 2 - 1;
-                this.speedY = Math.random() * 2 - 1;
+                this.speedX = Math.random() * 1.5 - 0.75;
+                this.speedY = Math.random() * 1.5 - 0.75;
             }
 
             draw() {
@@ -160,7 +170,7 @@
         }
 
         function init() {
-            for (let i = 0; i < 100; i++) {
+            for (let i = 0; i < 50; i++) {
                 const x = Math.random() * canvas.width;
                 const y = Math.random() * canvas.height;
                 particles.push(new Particle(x, y));
