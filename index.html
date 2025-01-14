@@ -13,7 +13,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            background: linear-gradient(180deg, #0d0d12, #2a002e);
+            background: linear-gradient(to bottom right, #0d0d12, #003366);
             height: 100vh;
             font-family: 'Poppins', sans-serif;
             overflow: hidden;
@@ -41,7 +41,7 @@
         h1 {
             font-size: 4rem;
             font-weight: 700;
-            background: linear-gradient(180deg, white, #d1b3ff);
+            background: linear-gradient(to bottom, white, #d1b3ff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.5);
@@ -95,19 +95,20 @@
         .grid {
             position: absolute;
             top: 0;
-            left: 0;
-            width: 100%;
+            right: 0;
+            width: 50%;
             height: 100%;
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
             grid-template-rows: repeat(auto-fill, minmax(50px, 1fr));
             z-index: 1;
             opacity: 0;
-            animation: fadeIn 2s ease-in-out forwards;
+            animation: gridFadeIn 2s ease-in-out forwards;
         }
 
         .grid div {
             border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: squareFadeIn 1.5s ease-in-out forwards;
         }
 
         @keyframes fadeIn {
@@ -119,19 +120,47 @@
             }
         }
 
+        @keyframes gridFadeIn {
+            0% {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes squareFadeIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
     </style>
 </head>
 <body>
     <canvas></canvas>
     <div class="grid">
-        <!-- the square grid is not working, will fix soon or idk when 🙏🙏🙏 -->
+        <!-- This grid system adds the lines in the background -->
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
     </div>
     <div class="container">
+        <img src="https://cdn.discordapp.com/attachments/1328458897597530182/1328464623917207655/proximatransparent.png?ex=6786cc98&is=67857b18&hm=bf2efea209fb8ea65e3a75942e5ab651442ce5279dd095da354c5c2279a1c6b0&" alt="Proxima Icon" class="icon">
         <h1>Proxima</h1>
         <p>"The best & safest choice"</p>
         <div class="buttons">
-            <button class="btn" onclick="window.location.href='https://gofile.io/d/Yckp7A';">Download</button>
-            <button class="btn" onclick="window.location.href='https://discord.gg/cU5Ut6pdCc';">Discord</button>
+            <button class="btn" onclick="window.location.href='https://example.com/download';">Download</button>
+            <button class="btn" onclick="window.location.href='https://discord.com/invite/example';">Discord</button>
         </div>
     </div>
 
@@ -196,4 +225,3 @@
     </script>
 </body>
 </html>
-<!-- IN VERY MUCH BETA -->
