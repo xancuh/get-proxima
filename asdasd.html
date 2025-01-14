@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+        body {
+            background-color: #181818; /* Dark background color */
+            color: white; /* Set default text color to white */
+            font-family: 'Leelawadee UI', Arial, sans-serif; /* Apply Leelawadee UI font */
+            margin: 0; /* Remove default margin */
+            padding-top: 80px; /* Add padding to avoid content being hidden under the fixed search bar */
+        }
+        /* Add your custom styles here */
+        textarea {
+            width: 100%;
+            height: 80px;
+            color: white; /* Set text color inside textarea to white */
+            background-color: #333; /* Set background color inside textarea */
+            border: 1px solid #444; /* Optional: Set border color for textarea */
+        }
+        /* Responsive grid layout for scripts-container */
+        #scripts-container {
+            background-color: #181818;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            padding: 10px;
+        }
+        @media (max-width: 1200px) {
+            #scripts-container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        @media (max-width: 900px) {
+            #scripts-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 600px) {
+            #scripts-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        h1, h2, p {
+            color: white; /* Set text color for h1, h2, and p to white */
+            font-size: larger;
+        }
+        #scripts-container div {
+            border: 0px solid #ccc;
+            padding: 20px;
+            background-color: #282828; /* Slightly lighter background for script containers */
+            border-radius: 10px; /* Curved corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+            height: 400px; /* Set a fixed height for each section */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .thumbnail {
+            width: 300px; /* Set desired width */
+            height: auto; /* Maintain aspect ratio */
+            margin-bottom: 10px;
+        }
+        #search-bar {
+            width: 50%;
+            padding: 10px;
+            margin: 10px auto;
+            box-sizing: border-box;
+            border: 1px solid #444;
+            background-color: #333;
+            color: white;
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000; /* Ensure the search bar is on top of other elements */
+            border-radius: 20px; /* Make the search bar curved */
+        }
+        #pagination {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .page-number {
+            display: inline-block;
+            padding: 10px;
+            margin: 0 5px;
+            cursor: pointer;
+            background-color: #333;
+            color: white;
+            border: 1px solid #444;
+            border-radius: 10px; /* Make page numbers curved */
+        }
+        .page-number.active {
+            background-color: #555;
+        }
+        .copy-button {
+            padding: 10px;
+            margin-top: 10px;
+            background-color: #444;
+            color: white;
+            border: none;
+            border-radius: 10px; /* Make the button curved */
+            cursor: pointer;
+        }
+        .copy-button:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <input type="text" id="search-bar" placeholder="Search scripts by title..." />
+    <div id="scripts-container"></div>
+    <div id="pagination"></div>
+
+    <script>
+        let allScripts = [];
+        let currentPage = 1;
+        const scriptsPerPage = 10;
+
+        // Fetch and display scripts
+        fetchScripts(currentPage);
+
+        function fetchScripts(page) {
+            fetch(`https://rscripts.net/api/scripts?page=${page}&orderBy=date&sort=desc`)
+                .then((response) => response.json())
+                .then((data) => {
+                    allScripts = data.scripts;
+                    displayScripts(allScripts.slice((page - 1) * scriptsPerPage, page * scriptsPerPage));
+                    displayPagination(data.totalPages, page);
+                })
+                .catch((error) => {
+                    console.error("Error fetching scripts:", error);
+                });
+        }
+
+        function displayScripts(scripts) {
+            const scriptsContainer = document.getElementById("scripts-container");
+            scriptsContainer.innerHTML = ""; // Clear previous content
+
+            scripts.forEach((script) => {
+                const hasUser = script.user.length > 0;
+                const user = hasUser > 0 ? script.user[0].username : { username: script.creator };
+                const thumbnailUrl = script.image ? `https://rscripts.net/assets/scripts/${script.image}` : script.gameThumbnail;
+                const downloadUrl = isValidUrl(script.download) ? script.download : `https://rscripts.net/assets/scripts/${script.download}`;
+
+                const scriptElement = document.createElement("div");
+                scriptElement.innerHTML = `
+                    <h2>${script.title}</h2>
+                    <p>Creator: ${user}</p>
+                    <img class="thumbnail" src="${thumbnailUrl}" alt="${script.title}">
+                    <button id="script-${script._id}"class="copy-button">Copy Script</button>
+                `;
+
+                scriptElement.querySelector(".copy-button").addEventListener("click", () => {
+                    fetch(downloadUrl)
+                        .then(response => response.text())
+                        .then(scriptContent => {
+                            copyToClipboard(scriptContent);
+                            alert("Script copied to clipboard!");
+                        })
+                        .catch(error => console.error(`Error fetching script content for ${script.title}:`, error));
+                });
+
+                scriptsContainer.appendChild(scriptElement);
+            });
+        }
+
+        function copyToClipboard(text) {
+            const tempTextArea = document.createElement("textarea");
+            tempTextArea.value = text;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempTextArea);
+        }
+
+        function isValidUrl(url) {
+            try {
+                new URL(url);
+                return true;
+            } catch (error) {
+                return false;
+            }
+        }
+
+        // Add event listener to search bar
+        document.getElementById("search-bar").addEventListener("input", (event) => {
+            const query = event.target.value.toLowerCase();
+            const filteredScripts = allScripts.filter(script => script.title.toLowerCase().includes(query));
+            displayScripts(filteredScripts.slice(0, scriptsPerPage));
+            displayPagination(Math.ceil(filteredScripts.length / scriptsPerPage), 1);
+        });
+
+        function displayPagination(totalPages, currentPage) {
+            const paginationContainer = document.getElementById("pagination");
+            paginationContainer.innerHTML = ""; // Clear previous content
+
+            for (let i = 1; i <= totalPages; i++) {
+                const pageNumber = document.createElement("div");
+                pageNumber.className = `page-number${i === currentPage ? ' active' : ''}`;
+                pageNumber.textContent = i;
+                pageNumber.addEventListener("click", () => {
+                    currentPage = i;
+                    fetchScripts(currentPage);
+                });
+                paginationContainer.appendChild(pageNumber);
+            }
+        }
+    </script>
+</body>
+</html>
